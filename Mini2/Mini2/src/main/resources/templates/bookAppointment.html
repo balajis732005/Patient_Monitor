@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Appointment</title>
+  <script>
+    async function bookAppointment() {
+      const appointment = {
+        patientId: document.getElementById('patientId').value,
+        doctorId: document.getElementById('doctorId').value,
+        date: document.getElementById('date').value,
+        reason: document.getElementById('reason').value
+      };
+      const response = await fetch('/api/appointments/book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(appointment)
+      });
+      if (response.status === 201) {
+        alert('Appointment booked successfully');
+      } else {
+        alert('Error booking appointment');
+      }
+    }
+  </script>
+</head>
+<body>
+<h1>Book an Appointment</h1>
+<form onsubmit="event.preventDefault(); bookAppointment();">
+  <label for="patientId">Patient ID:</label>
+  <input type="number" id="patientId" required><br>
+  <label for="doctorId">Doctor ID:</label>
+  <input type="number" id="doctorId" required><br>
+  <label for="date">Date:</label>
+  <input type="date" id="date" required><br>
+  <label for="reason">Reason:</label>
+  <input type="text" id="reason" required><br>
+  <button type="submit">Book Appointment</button>
+</form>
+</body>
+</html>
