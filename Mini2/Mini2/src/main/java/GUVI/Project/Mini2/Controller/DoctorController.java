@@ -12,13 +12,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/doctors")
+@CrossOrigin(origins = "*")
 public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
 
     // Get all doctors
-    @GetMapping
+    @GetMapping("/get-all-doctors")
     public ResponseEntity<List<Doctor>> getAllDoctors() {
         List<Doctor> doctors = doctorService.getAllDoctors();
         return new ResponseEntity<>(doctors, HttpStatus.OK);

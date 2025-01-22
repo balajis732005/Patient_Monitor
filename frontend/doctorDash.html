@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Doctors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .book-button {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .book-button:hover {
+            background-color: #218838;
+        }
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+    <script>
+        // Function to fetch and display doctor details
+        async function fetchDoctors() {
+            try {
+                // Fetching data from the backend API
+                const response = await fetch('http://localhost:8081/api/patients/get-all-patients');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch doctor data');
+                }
+
+                // Parsing the response as JSON
+                const doctors = await response.json();
+
+                // Getting the table element where doctor details will be displayed
+                const doctorTableBody = document.getElementById('doctorTableBody');
+                doctorTableBody.innerHTML = ''; // Clear any existing rows
+
+                // Iterating through the list of doctors and creating table rows dynamically
+                doctors.forEach(doctor => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${doctor.name}</td>
+                        <td>${doctor.specialization}</td>
+                        <td>${doctor.email}</td>
+                        <td>${doctor.phone}</td>
+                        <td>${doctor.medicalHistory}</td>
+                        <td><button class="book-button" onclick="bookDoctor('${doctor.name}')">Accept</button></td>
+                    `;
+
+                    // Append the row to the table body
+                    doctorTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching doctor data:', error);
+                alert('An error occurred while fetching the doctor data.');
+            }
+        }
+
+        // Function to handle booking a doctor
+        function bookDoctor(doctorName) {
+            alert(`${doctorName} is Accepted.`);
+        }
+
+        // Call fetchDoctors on page load
+        window.onload = fetchDoctors;
+    </script>
+</head>
+<body>
+    <h1>All Patients</h1>
+    
+    <!-- Table to display doctor details -->
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Specialization</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Medical History</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="doctorTableBody">
+            <!-- Doctor details will be inserted here -->
+        </tbody>
+    </table>
+
+    <!-- Message to show when a doctor is booked -->
+    <div id="bookingMessage" class="message"></div>
+</body>
+</html>

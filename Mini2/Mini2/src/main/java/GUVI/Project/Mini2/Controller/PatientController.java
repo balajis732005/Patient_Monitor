@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/patients")
+@CrossOrigin(origins = "*")
 public class PatientController {
 
     @Autowired
@@ -22,7 +23,7 @@ public class PatientController {
     private DoctorService doctorService;
 
     // Get all patients
-    @GetMapping
+    @GetMapping("get-all-patients")
     public ResponseEntity<List<Patient>> getAllPatients() {
         List<Patient> patients = patientService.getAllPatients();
         return new ResponseEntity<>(patients, HttpStatus.OK);
